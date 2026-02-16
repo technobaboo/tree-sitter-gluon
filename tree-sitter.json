@@ -5,7 +5,8 @@
       "camelcase": "Gluon",
       "scope": "source.gluon",
       "path": ".",
-      "file-types": ["gluon"]
+      "file-types": ["gluon"],
+      "highlights": "queries/highlights.scm"
     }
   ],
   "metadata": {
