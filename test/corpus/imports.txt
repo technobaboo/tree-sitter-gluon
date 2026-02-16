@@ -1,0 +1,73 @@
+===
+Simple import
+===
+
+import "spatial.gluon"
+
+/// Test
+interface Foo {
+    ping() -> ()
+}
+
+---
+
+(source_file
+  (import_declaration
+    (import_path))
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (return_type))))
+
+===
+Import with alias
+===
+
+import "other.gluon" as myalias
+
+/// Test
+interface Foo {
+    ping() -> ()
+}
+
+---
+
+(source_file
+  (import_declaration
+    (import_path)
+    (identifier))
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (return_type))))
+
+===
+Multiple imports
+===
+
+import "spatial.gluon"
+import "other.gluon" as myalias
+
+/// Test
+interface Foo {
+    ping() -> ()
+}
+
+---
+
+(source_file
+  (import_declaration
+    (import_path))
+  (import_declaration
+    (import_path)
+    (identifier))
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (return_type))))

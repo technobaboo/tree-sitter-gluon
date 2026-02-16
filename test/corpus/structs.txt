@@ -1,0 +1,121 @@
+===
+Simple struct
+===
+
+/// A 3D vector
+struct Vec3 {
+    x: f32,
+    y: f32,
+    z: f32,
+}
+
+---
+
+(source_file
+  (struct_definition
+    (doc_comment)
+    name: (type_identifier)
+    (field_list
+      (field
+        name: (identifier)
+        type: (primitive_type))
+      (field
+        name: (identifier)
+        type: (primitive_type))
+      (field
+        name: (identifier)
+        type: (primitive_type)))))
+
+===
+Struct with documented fields
+===
+
+/// A color
+struct Color {
+    /// Red channel
+    r: f32,
+    /// Green channel
+    g: f32,
+    a: f32,
+}
+
+---
+
+(source_file
+  (struct_definition
+    (doc_comment)
+    name: (type_identifier)
+    (field_list
+      (field
+        (doc_comment)
+        name: (identifier)
+        type: (primitive_type))
+      (field
+        (doc_comment)
+        name: (identifier)
+        type: (primitive_type))
+      (field
+        name: (identifier)
+        type: (primitive_type)))))
+
+===
+Struct with multi-line doc
+===
+
+/// Position in 3D space
+/// with x, y, z components
+struct Vec3 {
+    x: f32,
+    y: f32,
+    z: f32,
+}
+
+---
+
+(source_file
+  (struct_definition
+    (doc_comment)
+    (doc_comment)
+    name: (type_identifier)
+    (field_list
+      (field
+        name: (identifier)
+        type: (primitive_type))
+      (field
+        name: (identifier)
+        type: (primitive_type))
+      (field
+        name: (identifier)
+        type: (primitive_type)))))
+
+===
+Struct with qualified types
+===
+
+import "spatial.gluon"
+
+/// A transform
+struct Transform {
+    position: spatial::Vec3,
+    rotation: spatial::Quat,
+}
+
+---
+
+(source_file
+  (import_declaration
+    (import_path))
+  (struct_definition
+    (doc_comment)
+    name: (type_identifier)
+    (field_list
+      (field
+        name: (identifier)
+        type: (qualified_type
+          namespace: (identifier)
+          name: (identifier)))
+      (field
+        name: (identifier)
+        type: (qualified_type
+          namespace: (identifier)
+          name: (identifier))))))

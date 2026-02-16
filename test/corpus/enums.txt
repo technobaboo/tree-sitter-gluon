@@ -1,0 +1,111 @@
+===
+Simple enum
+===
+
+/// Interaction methods
+enum Interaction {
+    Pointer {
+        origin: f32,
+        direction: f32,
+    },
+    Hand {
+        joints: u32,
+    },
+    None,
+}
+
+---
+
+(source_file
+  (enum_definition
+    (doc_comment)
+    name: (type_identifier)
+    (enum_variant_list
+      (enum_variant
+        name: (type_identifier)
+        (field_list
+          (field
+            name: (identifier)
+            type: (primitive_type))
+          (field
+            name: (identifier)
+            type: (primitive_type))))
+      (enum_variant
+        name: (type_identifier)
+        (field_list
+          (field
+            name: (identifier)
+            type: (primitive_type))))
+      (enum_variant
+        name: (type_identifier)))))
+
+===
+Enum with documented variants
+===
+
+/// Paint types
+enum Paint {
+    /// No paint
+    None,
+    /// Solid color fill
+    Solid {
+        /// The fill color
+        color: String,
+    },
+    Gradient,
+}
+
+---
+
+(source_file
+  (enum_definition
+    (doc_comment)
+    name: (type_identifier)
+    (enum_variant_list
+      (enum_variant
+        (doc_comment)
+        name: (type_identifier))
+      (enum_variant
+        (doc_comment)
+        name: (type_identifier)
+        (field_list
+          (field
+            (doc_comment)
+            name: (identifier)
+            type: (primitive_type))))
+      (enum_variant
+        name: (type_identifier)))))
+
+===
+Enum with qualified types
+===
+
+import "spatial.gluon"
+
+/// Hit result
+enum HitResult {
+    Miss,
+    Hit {
+        point: spatial::Vec3,
+    },
+}
+
+---
+
+(source_file
+  (import_declaration
+    (import_path))
+  (enum_definition
+    (doc_comment)
+    name: (type_identifier)
+    (enum_variant_list
+      (enum_variant
+        name: (type_identifier))
+      (enum_variant
+        name: (type_identifier)
+        (field_list
+          (field
+            name: (identifier)
+            type: (qualified_type
+              namespace: (identifier)
+              name: (identifier))))))))

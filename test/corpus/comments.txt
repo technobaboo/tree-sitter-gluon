@@ -1,0 +1,23 @@
+===
+Line comments in interface
+===
+
+/// A test interface
+interface Test {
+    quit() // oneway transaction
+    ping() -> () // ensures it got it
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier))
+    (line_comment)
+    (method
+      name: (identifier)
+      (return_type))
+    (line_comment)))

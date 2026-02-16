@@ -1,0 +1,202 @@
+===
+Primitive types
+===
+
+/// All primitives
+interface Primitives {
+    test(a: bool, b: u8, c: u16, d: u32, e: u64, f: i8, g: i16, h: i32, i: i64, j: f32, k: f64, l: String, m: Fd)
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (parameter_list
+        (parameter name: (identifier) type: (primitive_type))
+        (parameter name: (identifier) type: (primitive_type))
+        (parameter name: (identifier) type: (primitive_type))
+        (parameter name: (identifier) type: (primitive_type))
+        (parameter name: (identifier) type: (primitive_type))
+        (parameter name: (identifier) type: (primitive_type))
+        (parameter name: (identifier) type: (primitive_type))
+        (parameter name: (identifier) type: (primitive_type))
+        (parameter name: (identifier) type: (primitive_type))
+        (parameter name: (identifier) type: (primitive_type))
+        (parameter name: (identifier) type: (primitive_type))
+        (parameter name: (identifier) type: (primitive_type))
+        (parameter name: (identifier) type: (primitive_type))))))
+
+===
+Container types
+===
+
+/// Containers
+interface Containers {
+    vec_test() -> (v: Vec<u8>)
+    set_test() -> (s: Set<String>)
+    map_test() -> (m: Map<String, u32>)
+    array_test() -> (a: [u8; 32])
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (vec_type
+              element: (primitive_type))))))
+    (method
+      name: (identifier)
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (set_type
+              element: (primitive_type))))))
+    (method
+      name: (identifier)
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (map_type
+              key: (primitive_type)
+              value: (primitive_type))))))
+    (method
+      name: (identifier)
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (array_type
+              element: (primitive_type)
+              size: (integer))))))))
+
+===
+Ref types
+===
+
+/// Refs
+interface RefTest {
+    get_any() -> (obj: Ref)
+    get_display(name: String) -> (display: Ref<Display>)
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (ref_type)))))
+    (method
+      name: (identifier)
+      (parameter_list
+        (parameter
+          name: (identifier)
+          type: (primitive_type)))
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (ref_type
+              (identifier))))))))
+
+===
+Named types
+===
+
+/// Named
+interface Named {
+    get(name: String) -> (result: HitResult)
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (parameter_list
+        (parameter
+          name: (identifier)
+          type: (primitive_type)))
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (named_type
+              (type_identifier))))))))
+
+===
+Nested container types
+===
+
+/// Nested
+interface Nested {
+    test() -> (v: Vec<Vec<u8>>)
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (vec_type
+              element: (vec_type
+                element: (primitive_type)))))))))
+
+===
+Ref with qualified type
+===
+
+import "spatial.gluon"
+
+/// Qualified ref
+interface QualRef {
+    get() -> (r: Ref<spatial::Node>)
+}
+
+---
+
+(source_file
+  (import_declaration
+    (import_path))
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (ref_type
+              (identifier)
+              (identifier))))))))

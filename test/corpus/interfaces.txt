@@ -1,0 +1,124 @@
+===
+Simple interface
+===
+
+/// A test interface
+interface Test {
+    quit()
+    ping() -> ()
+    echo(input: String) -> (output: String)
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier))
+    (method
+      name: (identifier)
+      (return_type))
+    (method
+      name: (identifier)
+      (parameter_list
+        (parameter
+          name: (identifier)
+          type: (primitive_type)))
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (primitive_type)))))))
+
+===
+Interface with multiple params
+===
+
+/// File storage
+interface FileStore {
+    upload(data: Vec<u8>, name: String, executable: bool) -> (handle: Fd)
+    read(handle: Fd, offset: u64, length: u32) -> (data: Vec<u8>, bytes_read: u32)
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (parameter_list
+        (parameter
+          name: (identifier)
+          type: (vec_type
+            element: (primitive_type)))
+        (parameter
+          name: (identifier)
+          type: (primitive_type))
+        (parameter
+          name: (identifier)
+          type: (primitive_type)))
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (primitive_type)))))
+    (method
+      name: (identifier)
+      (parameter_list
+        (parameter
+          name: (identifier)
+          type: (primitive_type))
+        (parameter
+          name: (identifier)
+          type: (primitive_type))
+        (parameter
+          name: (identifier)
+          type: (primitive_type)))
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (vec_type
+              element: (primitive_type)))
+          (parameter
+            name: (identifier)
+            type: (primitive_type)))))))
+
+===
+Interface with qualified types
+===
+
+import "spatial.gluon"
+
+/// Test
+interface Foo {
+    do_thing(pos: spatial::Vec3) -> (result: spatial::HitResult)
+}
+
+---
+
+(source_file
+  (import_declaration
+    (import_path))
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (parameter_list
+        (parameter
+          name: (identifier)
+          type: (qualified_type
+            namespace: (identifier)
+            name: (identifier))))
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (qualified_type
+              namespace: (identifier)
+              name: (identifier))))))))
