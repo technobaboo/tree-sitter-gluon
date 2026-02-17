@@ -1,0 +1,119 @@
+===
+Complete file with imports, interface, struct, and enum
+===
+
+import "spatial.gluon"
+import "input.gluon" as input
+
+/// An XR node
+interface Node {
+    set_position(x: f32, y: f32, z: f32)
+    get_transform() -> (transform: Transform)
+    destroy()
+}
+
+/// A spatial transform
+struct Transform {
+    position: spatial::Vec3,
+    rotation: spatial::Quat,
+    scale: spatial::Vec3,
+}
+
+/// Input event types
+enum InputEvent {
+    /// A pointer ray
+    Pointer {
+        origin: spatial::Vec3,
+        direction: spatial::Vec3,
+    },
+    /// Hand tracking data
+    Hand {
+        joints: Vec<spatial::Vec3>,
+    },
+    /// No input
+    None,
+}
+
+---
+
+(source_file
+  (import_declaration
+    (import_path))
+  (import_declaration
+    (import_path)
+    (identifier))
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (parameter_list
+        (parameter
+          name: (identifier)
+          type: (primitive_type))
+        (parameter
+          name: (identifier)
+          type: (primitive_type))
+        (parameter
+          name: (identifier)
+          type: (primitive_type))))
+    (method
+      name: (identifier)
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (named_type
+              (type_identifier))))))
+    (method
+      name: (identifier)))
+  (struct_definition
+    (doc_comment)
+    name: (type_identifier)
+    (field_list
+      (field
+        name: (identifier)
+        type: (qualified_type
+          namespace: (identifier)
+          name: (identifier)))
+      (field
+        name: (identifier)
+        type: (qualified_type
+          namespace: (identifier)
+          name: (identifier)))
+      (field
+        name: (identifier)
+        type: (qualified_type
+          namespace: (identifier)
+          name: (identifier)))))
+  (enum_definition
+    (doc_comment)
+    name: (type_identifier)
+    (enum_variant_list
+      (enum_variant
+        (doc_comment)
+        name: (type_identifier)
+        (field_list
+          (field
+            name: (identifier)
+            type: (qualified_type
+              namespace: (identifier)
+              name: (identifier)))
+          (field
+            name: (identifier)
+            type: (qualified_type
+              namespace: (identifier)
+              name: (identifier)))))
+      (enum_variant
+        (doc_comment)
+        name: (type_identifier)
+        (field_list
+          (field
+            name: (identifier)
+            type: (vec_type
+              element: (qualified_type
+                namespace: (identifier)
+                name: (identifier))))))
+      (enum_variant
+        (doc_comment)
+        name: (type_identifier)))))

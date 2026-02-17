@@ -4,7 +4,6 @@ Simple import
 
 import "spatial.gluon"
 
-/// Test
 interface Foo {
     ping() -> ()
 }
@@ -15,7 +14,6 @@ interface Foo {
   (import_declaration
     (import_path))
   (interface_definition
-    (doc_comment)
     name: (type_identifier)
     (method
       name: (identifier)
@@ -27,7 +25,6 @@ Import with alias
 
 import "other.gluon" as myalias
 
-/// Test
 interface Foo {
     ping() -> ()
 }
@@ -39,7 +36,6 @@ interface Foo {
     (import_path)
     (identifier))
   (interface_definition
-    (doc_comment)
     name: (type_identifier)
     (method
       name: (identifier)
@@ -52,7 +48,6 @@ Multiple imports
 import "spatial.gluon"
 import "other.gluon" as myalias
 
-/// Test
 interface Foo {
     ping() -> ()
 }
@@ -66,8 +61,23 @@ interface Foo {
     (import_path)
     (identifier))
   (interface_definition
-    (doc_comment)
     name: (type_identifier)
     (method
       name: (identifier)
       (return_type))))
+
+===
+Imports only file
+===
+
+import "spatial.gluon"
+import "other.gluon" as myalias
+
+---
+
+(source_file
+  (import_declaration
+    (import_path))
+  (import_declaration
+    (import_path)
+    (identifier)))

@@ -1,5 +1,5 @@
 ===
-Simple enum
+Mixed variants
 ===
 
 /// Interaction methods
@@ -77,6 +77,88 @@ enum Paint {
         name: (type_identifier)))))
 
 ===
+All unit variants
+===
+
+/// Directions
+enum Direction {
+    Up,
+    Down,
+    Left,
+    Right,
+}
+
+---
+
+(source_file
+  (enum_definition
+    (doc_comment)
+    name: (type_identifier)
+    (enum_variant_list
+      (enum_variant
+        name: (type_identifier))
+      (enum_variant
+        name: (type_identifier))
+      (enum_variant
+        name: (type_identifier))
+      (enum_variant
+        name: (type_identifier)))))
+
+===
+All data variants
+===
+
+/// Shapes
+enum Shape {
+    Circle {
+        radius: f32,
+    },
+    Rect {
+        width: f32,
+        height: f32,
+    },
+}
+
+---
+
+(source_file
+  (enum_definition
+    (doc_comment)
+    name: (type_identifier)
+    (enum_variant_list
+      (enum_variant
+        name: (type_identifier)
+        (field_list
+          (field
+            name: (identifier)
+            type: (primitive_type))))
+      (enum_variant
+        name: (type_identifier)
+        (field_list
+          (field
+            name: (identifier)
+            type: (primitive_type))
+          (field
+            name: (identifier)
+            type: (primitive_type)))))))
+
+===
+Empty enum
+===
+
+/// Empty
+enum Empty {
+}
+
+---
+
+(source_file
+  (enum_definition
+    (doc_comment)
+    name: (type_identifier)
+    (enum_variant_list)))
+
+===
 Enum with qualified types
 ===
 
@@ -109,3 +191,23 @@ enum HitResult {
             type: (qualified_type
               namespace: (identifier)
               name: (identifier))))))))
+
+===
+Enum without doc comment
+===
+
+enum Bare {
+    A,
+    B,
+}
+
+---
+
+(source_file
+  (enum_definition
+    name: (type_identifier)
+    (enum_variant_list
+      (enum_variant
+        name: (type_identifier))
+      (enum_variant
+        name: (type_identifier)))))

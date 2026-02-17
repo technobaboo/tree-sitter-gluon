@@ -1,178 +1,201 @@
-/// <reference types="tree-sitter-cli/dsl" />
-
 module.exports = grammar({
-  name: "gluon",
+	name: "gluon",
 
-  extras: ($) => [/\s/, $.line_comment],
+	extras: ($) => [/\s/, $.line_comment],
 
-  rules: {
-    source_file: ($) =>
-      seq(repeat($.import_declaration), repeat($._definition)),
+	word: ($) => $.identifier,
 
-    _definition: ($) =>
-      choice($.struct_definition, $.enum_definition, $.interface_definition),
+	rules: {
+		source_file: ($) =>
+			seq(
+				repeat($.import_declaration),
+				repeat(
+					choice(
+						$.interface_definition,
+						$.struct_definition,
+						$.enum_definition,
+					),
+				),
+			),
 
-    // --- Imports ---
+		// Comments — line_comment excludes /// so doc_comment wins when expected
+		line_comment: ($) => token(prec(-1, seq("//", /[^\n]*/))),
 
-    import_declaration: ($) =>
-      seq("import", $.import_path, optional(seq("as", $.identifier))),
+		doc_comment: ($) => token(prec(1, seq("///", /[^\n]*/))),
 
-    import_path: (_) => token(seq('"', /[^"]+/, '"')),
+		// Import declarations
+		import_declaration: ($) =>
+			seq("import", $.import_path, optional(seq("as", $.identifier))),
 
-    // --- Definitions (require doc comments) ---
+		import_path: ($) => token(seq('"', /([^"\\]|\\.)*/, '"')),
 
-    struct_definition: ($) =>
-      seq(
-        repeat1($.doc_comment),
-        "struct",
-        field("name", $.type_identifier),
-        "{",
-        optional($.field_list),
-        "}",
-      ),
+		// Interface definition
+		interface_definition: ($) =>
+			seq(
+				repeat($.doc_comment),
+				"interface",
+				field("name", alias($.identifier, $.type_identifier)),
+				"{",
+				repeat($.method),
+				"}",
+			),
 
-    enum_definition: ($) =>
-      seq(
-        repeat1($.doc_comment),
-        "enum",
-        field("name", $.type_identifier),
-        "{",
-        optional($.enum_variant_list),
-        "}",
-      ),
+		method: ($) =>
+			seq(
+				field("name", $.identifier),
+				choice($.parameter_list, seq("(", ")")),
+				optional($.return_type),
+			),
 
-    interface_definition: ($) =>
-      seq(
-        repeat1($.doc_comment),
-        "interface",
-        field("name", $.type_identifier),
-        "{",
-        repeat($.method),
-        "}",
-      ),
+		parameter_list: ($) =>
+			seq(
+				"(",
+				$.parameter,
+				repeat(seq(",", $.parameter)),
+				")",
+			),
 
-    // --- Fields ---
+		parameter: ($) =>
+			seq(field("name", $.identifier), ":", field("type", $._type)),
 
-    field_list: ($) => commaSep1($.field, optional(",")),
+		return_type: ($) => seq("->", choice($.parameter_list, seq("(", ")"))),
 
-    field: ($) =>
-      seq(
-        repeat($.doc_comment),
-        field("name", $.identifier),
-        ":",
-        field("type", $._type),
-      ),
+		// Struct definition
+		struct_definition: ($) =>
+			seq(
+				repeat($.doc_comment),
+				"struct",
+				field("name", alias($.identifier, $.type_identifier)),
+				$.field_list,
+			),
 
-    // --- Enum variants ---
+		field_list: ($) =>
+			seq(
+				"{",
+				optional(
+					seq($.field, repeat(seq(",", $.field)), optional(",")),
+				),
+				"}",
+			),
 
-    enum_variant_list: ($) => commaSep1($.enum_variant, optional(",")),
+		field: ($) =>
+			seq(
+				repeat($.doc_comment),
+				field("name", $.identifier),
+				":",
+				field("type", $._type),
+			),
 
-    enum_variant: ($) =>
-      seq(
-        repeat($.doc_comment),
-        field("name", $.type_identifier),
-        optional(seq("{", optional($.field_list), "}")),
-      ),
+		// Enum definition
+		enum_definition: ($) =>
+			seq(
+				repeat($.doc_comment),
+				"enum",
+				field("name", alias($.identifier, $.type_identifier)),
+				$.enum_variant_list,
+			),
 
-    // --- Methods ---
+		enum_variant_list: ($) =>
+			seq(
+				"{",
+				optional(
+					seq(
+						$.enum_variant,
+						repeat(seq(",", $.enum_variant)),
+						optional(","),
+					),
+				),
+				"}",
+			),
 
-    method: ($) =>
-      seq(
-        field("name", $.identifier),
-        "(",
-        optional($.parameter_list),
-        ")",
-        optional($.return_type),
-      ),
+		enum_variant: ($) =>
+			seq(
+				repeat($.doc_comment),
+				field("name", alias($.identifier, $.type_identifier)),
+				optional($.field_list),
+			),
 
-    parameter_list: ($) => commaSep1($.parameter),
+		// Types (hidden rule — concrete type appears directly in tree)
+		_type: ($) =>
+			choice(
+				$.primitive_type,
+				$.vec_type,
+				$.set_type,
+				$.map_type,
+				$.array_type,
+				$.ref_type,
+				$.qualified_type,
+				$.named_type,
+			),
 
-    parameter: ($) =>
-      seq(field("name", $.identifier), ":", field("type", $._type)),
+		primitive_type: ($) =>
+			choice(
+				"bool",
+				"u8",
+				"u16",
+				"u32",
+				"u64",
+				"i8",
+				"i16",
+				"i32",
+				"i64",
+				"f32",
+				"f64",
+				"String",
+				"Fd",
+			),
 
-    return_type: ($) =>
-      seq("->", "(", optional($.parameter_list), ")"),
+		vec_type: ($) => seq("Vec", "<", field("element", $._type), ">"),
 
-    // --- Types ---
+		set_type: ($) => seq("Set", "<", field("element", $._type), ">"),
 
-    _type: ($) =>
-      choice(
-        $.primitive_type,
-        $.vec_type,
-        $.set_type,
-        $.map_type,
-        $.array_type,
-        $.ref_type,
-        $.qualified_type,
-        $.named_type,
-      ),
+		map_type: ($) =>
+			seq(
+				"Map",
+				"<",
+				field("key", $._type),
+				",",
+				field("value", $._type),
+				">",
+			),
 
-    primitive_type: (_) =>
-      choice(
-        "bool",
-        "u8",
-        "u16",
-        "u32",
-        "u64",
-        "i8",
-        "i16",
-        "i32",
-        "i64",
-        "f32",
-        "f64",
-        "String",
-        "Fd",
-      ),
+		array_type: ($) =>
+			seq(
+				"[",
+				field("element", $._type),
+				";",
+				field("size", $.integer),
+				"]",
+			),
 
-    vec_type: ($) => seq("Vec", "<", field("element", $._type), ">"),
+		ref_type: ($) =>
+			seq(
+				"Ref",
+				optional(
+					seq(
+						"<",
+						$.identifier,
+						optional(seq("::", $.identifier)),
+						">",
+					),
+				),
+			),
 
-    set_type: ($) => seq("Set", "<", field("element", $._type), ">"),
+		qualified_type: ($) =>
+			prec(
+				2,
+				seq(
+					field("namespace", $.identifier),
+					"::",
+					field("name", $.identifier),
+				),
+			),
 
-    map_type: ($) =>
-      seq("Map", "<", field("key", $._type), ",", field("value", $._type), ">"),
+		named_type: ($) => alias($.identifier, $.type_identifier),
 
-    array_type: ($) =>
-      seq("[", field("element", $._type), ";", field("size", $.integer), "]"),
+		// Identifiers and literals
+		identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
-    ref_type: ($) =>
-      prec(1, seq("Ref", optional(seq("<", $._ref_inner, ">")))),
-
-    _ref_inner: ($) =>
-      choice(
-        seq($.identifier, "::", $.identifier),
-        $.identifier,
-      ),
-
-    qualified_type: ($) =>
-      seq(
-        field("namespace", $.identifier),
-        "::",
-        field("name", $.identifier),
-      ),
-
-    named_type: ($) => $.type_identifier,
-
-    // --- Tokens ---
-
-    type_identifier: (_) => /[A-Za-z_][A-Za-z0-9_]*/,
-
-    identifier: (_) => /[A-Za-z_][A-Za-z0-9_]*/,
-
-    integer: (_) => /[0-9]+/,
-
-    // --- Comments ---
-
-    doc_comment: (_) => token(seq("///", /[^\n]*/)),
-
-    line_comment: (_) =>
-      token(seq("//", optional(seq(/[^\/\n]/, /[^\n]*/)))),
-  },
+		integer: ($) => /[0-9]+/,
+	},
 });
-
-/**
- * Comma-separated list of one or more items, with optional trailing content.
- */
-function commaSep1(rule, trailing) {
-  const base = seq(rule, repeat(seq(",", rule)));
-  return trailing ? seq(base, trailing) : base;
-}

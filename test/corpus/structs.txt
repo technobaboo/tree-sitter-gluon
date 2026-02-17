@@ -119,3 +119,90 @@ struct Transform {
         type: (qualified_type
           namespace: (identifier)
           name: (identifier))))))
+
+===
+Empty struct
+===
+
+/// Empty
+struct Empty {
+}
+
+---
+
+(source_file
+  (struct_definition
+    (doc_comment)
+    name: (type_identifier)
+    (field_list)))
+
+===
+Struct without trailing comma
+===
+
+/// No trailing comma
+struct Pair {
+    x: f32,
+    y: f32
+}
+
+---
+
+(source_file
+  (struct_definition
+    (doc_comment)
+    name: (type_identifier)
+    (field_list
+      (field
+        name: (identifier)
+        type: (primitive_type))
+      (field
+        name: (identifier)
+        type: (primitive_type)))))
+
+===
+Struct with nested types
+===
+
+/// Nested
+struct Container {
+    items: Vec<Vec<u8>>,
+    lookup: Map<String, Vec<u32>>,
+}
+
+---
+
+(source_file
+  (struct_definition
+    (doc_comment)
+    name: (type_identifier)
+    (field_list
+      (field
+        name: (identifier)
+        type: (vec_type
+          element: (vec_type
+            element: (primitive_type))))
+      (field
+        name: (identifier)
+        type: (map_type
+          key: (primitive_type)
+          value: (vec_type
+            element: (primitive_type)))))))
+
+===
+Struct without doc comment
+===
+
+struct Bare {
+    x: f32,
+}
+
+---
+
+(source_file
+  (struct_definition
+    name: (type_identifier)
+    (field_list
+      (field
+        name: (identifier)
+        type: (primitive_type)))))

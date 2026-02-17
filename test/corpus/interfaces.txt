@@ -33,6 +33,102 @@ interface Test {
             type: (primitive_type)))))))
 
 ===
+Empty interface
+===
+
+/// Empty
+interface Empty {
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)))
+
+===
+Interface without doc comment
+===
+
+interface Bare {
+    ping() -> ()
+}
+
+---
+
+(source_file
+  (interface_definition
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (return_type))))
+
+===
+Interface with oneway method
+===
+
+/// Oneway
+interface OneWay {
+    quit()
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier))))
+
+===
+Interface with void return
+===
+
+/// Void
+interface VoidReturn {
+    ping() -> ()
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (return_type))))
+
+===
+Interface with return values
+===
+
+/// Returns
+interface WithReturns {
+    echo(input: String) -> (output: String)
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (parameter_list
+        (parameter
+          name: (identifier)
+          type: (primitive_type)))
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (primitive_type)))))))
+
+===
 Interface with multiple params
 ===
 
@@ -122,3 +218,46 @@ interface Foo {
             type: (qualified_type
               namespace: (identifier)
               name: (identifier))))))))
+
+===
+Interface with mixed methods
+===
+
+/// Mixed
+interface Mixed {
+    fire()
+    ping() -> ()
+    get_name() -> (name: String)
+    set_position(x: f32, y: f32, z: f32)
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (method
+      name: (identifier))
+    (method
+      name: (identifier)
+      (return_type))
+    (method
+      name: (identifier)
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (primitive_type)))))
+    (method
+      name: (identifier)
+      (parameter_list
+        (parameter
+          name: (identifier)
+          type: (primitive_type))
+        (parameter
+          name: (identifier)
+          type: (primitive_type))
+        (parameter
+          name: (identifier)
+          type: (primitive_type))))))

@@ -2,7 +2,6 @@
 Primitive types
 ===
 
-/// All primitives
 interface Primitives {
     test(a: bool, b: u8, c: u16, d: u32, e: u64, f: i8, g: i16, h: i32, i: i64, j: f32, k: f64, l: String, m: Fd)
 }
@@ -11,7 +10,6 @@ interface Primitives {
 
 (source_file
   (interface_definition
-    (doc_comment)
     name: (type_identifier)
     (method
       name: (identifier)
@@ -34,7 +32,6 @@ interface Primitives {
 Container types
 ===
 
-/// Containers
 interface Containers {
     vec_test() -> (v: Vec<u8>)
     set_test() -> (s: Set<String>)
@@ -46,7 +43,6 @@ interface Containers {
 
 (source_file
   (interface_definition
-    (doc_comment)
     name: (type_identifier)
     (method
       name: (identifier)
@@ -87,7 +83,6 @@ interface Containers {
 Ref types
 ===
 
-/// Refs
 interface RefTest {
     get_any() -> (obj: Ref)
     get_display(name: String) -> (display: Ref<Display>)
@@ -97,7 +92,6 @@ interface RefTest {
 
 (source_file
   (interface_definition
-    (doc_comment)
     name: (type_identifier)
     (method
       name: (identifier)
@@ -123,7 +117,6 @@ interface RefTest {
 Named types
 ===
 
-/// Named
 interface Named {
     get(name: String) -> (result: HitResult)
 }
@@ -132,7 +125,6 @@ interface Named {
 
 (source_file
   (interface_definition
-    (doc_comment)
     name: (type_identifier)
     (method
       name: (identifier)
@@ -148,10 +140,36 @@ interface Named {
               (type_identifier))))))))
 
 ===
+Qualified types
+===
+
+import "spatial.gluon"
+
+interface QualTest {
+    get() -> (v: spatial::Vec3)
+}
+
+---
+
+(source_file
+  (import_declaration
+    (import_path))
+  (interface_definition
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (qualified_type
+              namespace: (identifier)
+              name: (identifier))))))))
+
+===
 Nested container types
 ===
 
-/// Nested
 interface Nested {
     test() -> (v: Vec<Vec<u8>>)
 }
@@ -160,7 +178,6 @@ interface Nested {
 
 (source_file
   (interface_definition
-    (doc_comment)
     name: (type_identifier)
     (method
       name: (identifier)
@@ -178,7 +195,6 @@ Ref with qualified type
 
 import "spatial.gluon"
 
-/// Qualified ref
 interface QualRef {
     get() -> (r: Ref<spatial::Node>)
 }
@@ -189,7 +205,6 @@ interface QualRef {
   (import_declaration
     (import_path))
   (interface_definition
-    (doc_comment)
     name: (type_identifier)
     (method
       name: (identifier)
@@ -200,3 +215,28 @@ interface QualRef {
             type: (ref_type
               (identifier)
               (identifier))))))))
+
+===
+Deeply nested types
+===
+
+interface Deep {
+    test() -> (v: Map<String, Vec<Set<u32>>>)
+}
+
+---
+
+(source_file
+  (interface_definition
+    name: (type_identifier)
+    (method
+      name: (identifier)
+      (return_type
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (map_type
+              key: (primitive_type)
+              value: (vec_type
+                element: (set_type
+                  element: (primitive_type))))))))))

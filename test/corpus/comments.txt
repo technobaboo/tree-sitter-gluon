@@ -21,3 +21,24 @@ interface Test {
       name: (identifier)
       (return_type))
     (line_comment)))
+
+===
+Doc comment disambiguation
+===
+
+/// Doc for interface
+interface Foo {
+    // This is a line comment, not a doc comment
+    ping() -> ()
+}
+
+---
+
+(source_file
+  (interface_definition
+    (doc_comment)
+    name: (type_identifier)
+    (line_comment)
+    (method
+      name: (identifier)
+      (return_type))))

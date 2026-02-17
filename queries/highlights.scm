@@ -23,6 +23,7 @@
 
 ; Type references
 (named_type (type_identifier) @type)
+(ref_type (identifier) @type)
 (qualified_type namespace: (identifier) @module)
 (qualified_type name: (identifier) @type)
 (enum_variant name: (type_identifier) @type)
