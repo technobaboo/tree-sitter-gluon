@@ -1,4 +1,7 @@
-module.exports = grammar({
+/// <reference types="tree-sitter-cli/dsl" />
+// @ts-check
+
+export default grammar({
   name: "gluon",
 
   extras: ($) => [/\s/, $.line_comment],
@@ -25,9 +28,10 @@ module.exports = grammar({
 
     // Import declarations
     import_declaration: ($) =>
-      seq("import", $.import_path, optional(seq("as", $.identifier))),
+      seq("import", field("name", $.import_name), "as", field("namespace", $.identifier)),
 
     import_path: ($) => token(seq('"', /([^"\\]|\\.)*/, '"')),
+    import_name: ($) => token(seq('"', /[^"\n]+/, '"')),
 
     // Interface definition
     interface_definition: ($) =>
@@ -35,10 +39,13 @@ module.exports = grammar({
         repeat($.doc_comment),
         "interface",
         field("name", alias($.identifier, $.type_identifier)),
-        "{",
-        repeat($.method),
-        "}",
+        $.method_list
       ),
+    method_list: ($) => seq(
+      "{",
+      repeat($.method),
+      "}",
+    ),
 
     method: ($) =>
       seq(
@@ -119,11 +126,14 @@ module.exports = grammar({
     _type: ($) =>
       choice(
         $.primitive_type,
+        $.option_type,
+        $.result_type,
         $.vec_type,
         $.set_type,
         $.map_type,
         $.array_type,
         $.ref_type,
+        $.buf_type,
         $.qualified_type,
         $.named_type,
       ),
@@ -144,6 +154,9 @@ module.exports = grammar({
         "String",
         "Fd",
       ),
+
+    option_type: ($) => seq("Option", "<", field("value", $._type), ">"),
+    result_type: ($) => seq("Result", "<", field("value", $._type), ",", field("error", $._type), ">"),
 
     vec_type: ($) => seq("Vec", "<", field("element", $._type), ">"),
 
@@ -174,10 +187,16 @@ module.exports = grammar({
         optional(
           seq(
             "<",
-            $.identifier,
-            optional(seq("::", $.identifier)),
+            field("interface", choice($.qualified_type, $.named_type)),
             ">",
           ),
+        ),
+      ),
+    buf_type: ($) =>
+      seq(
+        "Buf",
+        optional(
+          seq("<", field("value", $._type), ">"),
         ),
       ),
 

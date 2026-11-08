@@ -1,12 +1,18 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
   "grammars": [
     {
       "name": "gluon",
       "camelcase": "Gluon",
+      "title": "Gluon",
       "scope": "source.gluon",
       "path": ".",
-      "file-types": ["gluon"],
-      "highlights": "queries/highlights.scm"
+      "file-types": [
+        "gluon"
+      ],
+      "highlights": "queries/highlights.scm",
+      "injection-regex": "^gluon$",
+      "class-name": "TreeSitterGluon"
     }
   ],
   "metadata": {

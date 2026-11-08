@@ -11,6 +11,7 @@ interface Primitives {
 (source_file
   (interface_definition
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier)
       (parameter_list
@@ -26,7 +27,7 @@ interface Primitives {
         (parameter name: (identifier) type: (primitive_type))
         (parameter name: (identifier) type: (primitive_type))
         (parameter name: (identifier) type: (primitive_type))
-        (parameter name: (identifier) type: (primitive_type))))))
+        (parameter name: (identifier) type: (primitive_type)))))))
 
 ===
 Container types
@@ -44,6 +45,7 @@ interface Containers {
 (source_file
   (interface_definition
     name: (type_identifier)
+    (method_list
     (method
       name: (identifier)
       (return_type
@@ -77,7 +79,7 @@ interface Containers {
             name: (identifier)
             type: (array_type
               element: (primitive_type)
-              size: (integer))))))))
+              size: (integer)))))))))
 
 ===
 Ref types
@@ -93,6 +95,7 @@ interface RefTest {
 (source_file
   (interface_definition
     name: (type_identifier)
+    (method_list
     (method
       name: (identifier)
       (return_type
@@ -111,7 +114,8 @@ interface RefTest {
           (parameter
             name: (identifier)
             type: (ref_type
-              (identifier))))))))
+			  interface: (named_type
+				(type_identifier))))))))))
 
 ===
 Named types
@@ -126,6 +130,7 @@ interface Named {
 (source_file
   (interface_definition
     name: (type_identifier)
+    (method_list
     (method
       name: (identifier)
       (parameter_list
@@ -137,13 +142,13 @@ interface Named {
           (parameter
             name: (identifier)
             type: (named_type
-              (type_identifier))))))))
+              (type_identifier)))))))))
 
 ===
 Qualified types
 ===
 
-import "spatial.gluon"
+import "org.stardustxr.Spatial" as spatial
 
 interface QualTest {
     get() -> (v: spatial::Vec3)
@@ -153,9 +158,10 @@ interface QualTest {
 
 (source_file
   (import_declaration
-    (import_path))
+    name: (import_name) namespace: (identifier))
   (interface_definition
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier)
       (return_type
@@ -164,7 +170,7 @@ interface QualTest {
             name: (identifier)
             type: (qualified_type
               namespace: (identifier)
-              name: (identifier))))))))
+              name: (identifier)))))))))
 
 ===
 Nested container types
@@ -179,6 +185,7 @@ interface Nested {
 (source_file
   (interface_definition
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier)
       (return_type
@@ -187,13 +194,13 @@ interface Nested {
             name: (identifier)
             type: (vec_type
               element: (vec_type
-                element: (primitive_type)))))))))
+                element: (primitive_type))))))))))
 
 ===
 Ref with qualified type
 ===
 
-import "spatial.gluon"
+import "org.stardustxr.Spatial" as spatial
 
 interface QualRef {
     get() -> (r: Ref<spatial::Node>)
@@ -203,9 +210,10 @@ interface QualRef {
 
 (source_file
   (import_declaration
-    (import_path))
+    name: (import_name) namespace: (identifier))
   (interface_definition
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier)
       (return_type
@@ -213,8 +221,9 @@ interface QualRef {
           (parameter
             name: (identifier)
             type: (ref_type
-              (identifier)
-              (identifier))))))))
+              interface: (qualified_type
+				namespace: (identifier)
+				name: (identifier))))))))))
 
 ===
 Deeply nested types
@@ -229,6 +238,7 @@ interface Deep {
 (source_file
   (interface_definition
     name: (type_identifier)
+    (method_list
     (method
       name: (identifier)
       (return_type
@@ -239,4 +249,4 @@ interface Deep {
               key: (primitive_type)
               value: (vec_type
                 element: (set_type
-                  element: (primitive_type))))))))))
+                  element: (primitive_type)))))))))))

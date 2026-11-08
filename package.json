@@ -2,17 +2,16 @@
   "name": "tree-sitter-gluon",
   "version": "0.1.0",
   "description": "Tree-sitter grammar for the Gluon IDL language",
-  "main": "bindings/node",
-  "keywords": ["tree-sitter", "parser", "gluon", "idl"],
-  "license": "MIT",
-  "tree-sitter": [
-    {
-      "scope": "source.gluon",
-      "file-types": ["gluon"],
-      "highlights": "queries/highlights.scm"
-    }
+  "keywords": [
+    "parsing",
+    "tree-sitter",
+    "gluon",
+    "idl"
   ],
+  "type": "module",
+  "license": "MIT",
   "devDependencies": {
-    "tree-sitter-cli": "^0.25.0"
+    "tree-sitter": "^0.25.0",
+    "tree-sitter-cli": "^0.26.9"
   }
 }

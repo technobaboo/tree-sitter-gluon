@@ -2,7 +2,7 @@
 Simple import
 ===
 
-import "spatial.gluon"
+import "org.stardustxr.Spatial" as spatial
 
 interface Foo {
     ping() -> ()
@@ -12,18 +12,19 @@ interface Foo {
 
 (source_file
   (import_declaration
-    (import_path))
+    name: (import_name) namespace: (identifier))
   (interface_definition
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier)
-      (return_type))))
+      (return_type)))))
 
 ===
 Import with alias
 ===
 
-import "other.gluon" as myalias
+import "org.stardustxr.gluon.Other" as myalias
 
 interface Foo {
     ping() -> ()
@@ -33,20 +34,20 @@ interface Foo {
 
 (source_file
   (import_declaration
-    (import_path)
-    (identifier))
+    name: (import_name) namespace: (identifier))
   (interface_definition
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier)
-      (return_type))))
+      (return_type)))))
 
 ===
 Multiple imports
 ===
 
-import "spatial.gluon"
-import "other.gluon" as myalias
+import "org.stardustxr.Spatial" as spatial
+import "org.stardustxr.gluon.Other" as myalias
 
 interface Foo {
     ping() -> ()
@@ -56,28 +57,27 @@ interface Foo {
 
 (source_file
   (import_declaration
-    (import_path))
+    name: (import_name) namespace: (identifier))
   (import_declaration
-    (import_path)
-    (identifier))
+    name: (import_name) namespace: (identifier))
   (interface_definition
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier)
-      (return_type))))
+      (return_type)))))
 
 ===
 Imports only file
 ===
 
-import "spatial.gluon"
-import "other.gluon" as myalias
+import "org.stardustxr.Spatial" as spatial
+import "org.stardustxr.gluon.Other" as myalias
 
 ---
 
 (source_file
   (import_declaration
-    (import_path))
+    name: (import_name) namespace: (identifier))
   (import_declaration
-    (import_path)
-    (identifier)))
+    name: (import_name) namespace: (identifier)))

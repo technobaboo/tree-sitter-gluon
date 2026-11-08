@@ -92,7 +92,7 @@ struct Vec3 {
 Struct with qualified types
 ===
 
-import "spatial.gluon"
+import "org.stardustxr.Spatial" as spatial
 
 /// A transform
 struct Transform {
@@ -104,7 +104,7 @@ struct Transform {
 
 (source_file
   (import_declaration
-    (import_path))
+    name: (import_name) namespace: (identifier))
   (struct_definition
     (doc_comment)
     name: (type_identifier)

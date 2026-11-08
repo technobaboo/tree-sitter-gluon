@@ -1,5 +1,5 @@
 (source_file) @local.scope
-(import_declaration "as" (identifier) @local.definition)
+(import_declaration namespace: (identifier) @local.definition)
 (struct_definition name: (type_identifier) @local.definition)
 (enum_definition name: (type_identifier) @local.definition)
 (interface_definition name: (type_identifier) @local.definition)

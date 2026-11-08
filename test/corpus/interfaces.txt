@@ -15,6 +15,7 @@ interface Test {
   (interface_definition
     (doc_comment)
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier))
     (method
@@ -30,7 +31,7 @@ interface Test {
         (parameter_list
           (parameter
             name: (identifier)
-            type: (primitive_type)))))))
+            type: (primitive_type))))))))
 
 ===
 Empty interface
@@ -45,7 +46,8 @@ interface Empty {
 (source_file
   (interface_definition
     (doc_comment)
-    name: (type_identifier)))
+    name: (type_identifier)
+	(method_list)))
 
 ===
 Interface without doc comment
@@ -60,9 +62,10 @@ interface Bare {
 (source_file
   (interface_definition
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier)
-      (return_type))))
+      (return_type)))))
 
 ===
 Interface with oneway method
@@ -79,8 +82,9 @@ interface OneWay {
   (interface_definition
     (doc_comment)
     name: (type_identifier)
+	(method_list
     (method
-      name: (identifier))))
+      name: (identifier)))))
 
 ===
 Interface with void return
@@ -97,9 +101,10 @@ interface VoidReturn {
   (interface_definition
     (doc_comment)
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier)
-      (return_type))))
+      (return_type)))))
 
 ===
 Interface with return values
@@ -116,6 +121,7 @@ interface WithReturns {
   (interface_definition
     (doc_comment)
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier)
       (parameter_list
@@ -126,7 +132,7 @@ interface WithReturns {
         (parameter_list
           (parameter
             name: (identifier)
-            type: (primitive_type)))))))
+            type: (primitive_type))))))))
 
 ===
 Interface with multiple params
@@ -144,6 +150,7 @@ interface FileStore {
   (interface_definition
     (doc_comment)
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier)
       (parameter_list
@@ -182,13 +189,13 @@ interface FileStore {
               element: (primitive_type)))
           (parameter
             name: (identifier)
-            type: (primitive_type)))))))
+            type: (primitive_type))))))))
 
 ===
 Interface with qualified types
 ===
 
-import "spatial.gluon"
+import "org.stardustxr.Spatial" as spatial
 
 /// Test
 interface Foo {
@@ -199,10 +206,11 @@ interface Foo {
 
 (source_file
   (import_declaration
-    (import_path))
+    name: (import_name) namespace: (identifier))
   (interface_definition
     (doc_comment)
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier)
       (parameter_list
@@ -217,7 +225,7 @@ interface Foo {
             name: (identifier)
             type: (qualified_type
               namespace: (identifier)
-              name: (identifier))))))))
+              name: (identifier)))))))))
 
 ===
 Interface with mixed methods
@@ -237,6 +245,7 @@ interface Mixed {
   (interface_definition
     (doc_comment)
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier))
     (method
@@ -260,4 +269,4 @@ interface Mixed {
           type: (primitive_type))
         (parameter
           name: (identifier)
-          type: (primitive_type))))))
+          type: (primitive_type)))))))

@@ -14,13 +14,14 @@ interface Test {
   (interface_definition
     (doc_comment)
     name: (type_identifier)
-    (method
-      name: (identifier))
-    (line_comment)
-    (method
-      name: (identifier)
-      (return_type))
-    (line_comment)))
+	(method_list
+		(method
+		  name: (identifier))
+		(line_comment)
+		(method
+		  name: (identifier)
+		  (return_type))
+		(line_comment))))
 
 ===
 Doc comment disambiguation
@@ -38,7 +39,8 @@ interface Foo {
   (interface_definition
     (doc_comment)
     name: (type_identifier)
+	(method_list
     (line_comment)
     (method
       name: (identifier)
-      (return_type))))
+      (return_type)))))

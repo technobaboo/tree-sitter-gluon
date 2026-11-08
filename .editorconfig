@@ -1,0 +1,16 @@
+root = true
+
+[*]
+charset = utf-8
+
+[*.{json}]
+indent_style = space
+indent_size = 2
+
+[*.js]
+indent_style = space
+indent_size = 2
+
+[*.scm]
+indent_style = space
+indent_size = 2

@@ -2,8 +2,8 @@
 Complete file with imports, interface, struct, and enum
 ===
 
-import "spatial.gluon"
-import "input.gluon" as input
+import "org.stardustxr.Spatial" as spatial
+import "org.stardustxr.Input" as input
 
 /// An XR node
 interface Node {
@@ -38,13 +38,13 @@ enum InputEvent {
 
 (source_file
   (import_declaration
-    (import_path))
+    name: (import_name) namespace: (identifier))
   (import_declaration
-    (import_path)
-    (identifier))
+    name: (import_name) namespace: (identifier))
   (interface_definition
     (doc_comment)
     name: (type_identifier)
+	(method_list
     (method
       name: (identifier)
       (parameter_list
@@ -66,7 +66,7 @@ enum InputEvent {
             type: (named_type
               (type_identifier))))))
     (method
-      name: (identifier)))
+      name: (identifier))))
   (struct_definition
     (doc_comment)
     name: (type_identifier)
